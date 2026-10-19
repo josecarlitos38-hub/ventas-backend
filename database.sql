@@ -1,0 +1,36 @@
+DROP DATABASE IF EXISTS ventas_db;
+CREATE DATABASE IF NOT EXISTS ventas_db;
+USE ventas_db;
+CREATE TABLE IF NOT EXISTS clientes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  apellido VARCHAR(100) NOT NULL,
+  email VARCHAR(150) UNIQUE,
+  telefono VARCHAR(20),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS productos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(150) NOT NULL,
+  precio DECIMAL(10,2) NOT NULL,
+  stock INT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS ventas (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  cliente_id INT NOT NULL,
+  fecha DATE NOT NULL,
+  total DECIMAL(10,2) DEFAULT 0,
+  FOREIGN KEY (cliente_id) REFERENCES clientes(id)
+);
+CREATE TABLE IF NOT EXISTS detalle_ventas (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  venta_id INT NOT NULL,
+  producto_id INT NOT NULL,
+  cantidad INT NOT NULL,
+  precio_unitario DECIMAL(10,2) NOT NULL,
+  subtotal DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (venta_id) REFERENCES ventas(id) ON DELETE CASCADE,
+  FOREIGN KEY (producto_id) REFERENCES productos(id)
+);
+show tables;
